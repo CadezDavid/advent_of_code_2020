@@ -52,9 +52,15 @@ let _ =
     |> preberi_datoteko |> String.split_on_char '\n')
   in
 
-  let odgovor1 = naloga1 vsebina_datoteke
-  and odgovor2 = naloga2 vsebina_datoteke
-  in
 
-  izpisi_datoteko ("/home/davidcadez/FMF/PROG1/advent_of_code_2020/out/day_" ^ day ^ "_1.out") (string_of_int odgovor1);
-  izpisi_datoteko ("/home/davidcadez/FMF/PROG1/advent_of_code_2020/out/day_" ^ day ^ "_2.out") (string_of_int odgovor2)
+  let start_time1 = Sys.time() in
+  let odgovor1 = naloga1 vsebina_datoteke in
+  let time_used1 = Sys.time() -. start_time1 in
+
+  let start_time2 = Sys.time() in
+  let odgovor2 = naloga2 vsebina_datoteke in
+  let time_used2 = Sys.time() -. start_time2 in
+
+
+  izpisi_datoteko ("/home/davidcadez/FMF/PROG1/advent_of_code_2020/out/day_" ^ day ^ "_1.out") ((string_of_int odgovor1) ^ " in " ^ (string_of_float time_used1) ^ "s");
+  izpisi_datoteko ("/home/davidcadez/FMF/PROG1/advent_of_code_2020/out/day_" ^ day ^ "_2.out") ((string_of_int odgovor2) ^ " in " ^ (string_of_float time_used2) ^ "s")
