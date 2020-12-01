@@ -3,18 +3,18 @@ let day = "1"
 let rec string_list_to_int_list = function
   | [] -> []
   | x :: xs ->
-  if x = "" then 0 :: (string_list_to_int_list xs)
-  else (int_of_string x) :: (string_list_to_int_list xs)
+    if x = "" then 0 :: (string_list_to_int_list xs)
+    else (int_of_string x) :: (string_list_to_int_list xs)
 
 let rec naloga1 vsebina_datoteke =
   match vsebina_datoteke with
   | [] -> failwith "Ne obstaja."
   | x :: xs ->
-  if x = "" then naloga1 xs else
-    let x1, xs1 = int_of_string x, string_list_to_int_list xs in
-    if List.mem (2020 - x1) xs1
-    then x1 * (2020 - x1)
-    else naloga1 xs
+    if x = "" then naloga1 xs else
+      let x1, xs1 = int_of_string x, string_list_to_int_list xs in
+      if List.mem (2020 - x1) xs1
+      then x1 * (2020 - x1)
+      else naloga1 xs
 
 let rec naloga2 vsebina_datoteke =
   let rec aux k list =
@@ -28,12 +28,12 @@ let rec naloga2 vsebina_datoteke =
   match vsebina_datoteke with
   | [] -> failwith "Ne obstaja."
   | x :: xs ->
-  if x = "" then naloga2 xs else
-    let x1, xs1 = int_of_string x, string_list_to_int_list xs in
-    let t = aux (2020 - x1) xs1 in
-    if t = 0
-    then naloga2 xs
-    else x1 * t
+    if x = "" then naloga2 xs else
+      let x1, xs1 = int_of_string x, string_list_to_int_list xs in
+      let t = aux (2020 - x1) xs1 in
+      if t = 0
+      then naloga2 xs
+      else x1 * t
 
 let _ =
   let preberi_datoteko ime_datoteke =
@@ -49,8 +49,15 @@ let _ =
 
   let vsebina_datoteke =
     (("/home/davidcadez/FMF/PROG1/advent_of_code_2020/in/day_" ^ day ^ ".in")
-    |> preberi_datoteko |> String.split_on_char '\n')
+     |> preberi_datoteko |> String.split_on_char '\n')
   in
+
+  let rec nekafunkcija = function
+    | [] -> 12
+    | x :: [] -> x
+    | _ -> 42
+  in
+  
 
 
   let start_time1 = Sys.time() in
@@ -60,7 +67,6 @@ let _ =
   let start_time2 = Sys.time() in
   let odgovor2 = naloga2 vsebina_datoteke in
   let time_used2 = Sys.time() -. start_time2 in
-
 
   izpisi_datoteko ("/home/davidcadez/FMF/PROG1/advent_of_code_2020/out/day_" ^ day ^ "_1.out") ((string_of_int odgovor1) ^ " in " ^ (string_of_float time_used1) ^ "s");
   izpisi_datoteko ("/home/davidcadez/FMF/PROG1/advent_of_code_2020/out/day_" ^ day ^ "_2.out") ((string_of_int odgovor2) ^ " in " ^ (string_of_float time_used2) ^ "s")
