@@ -2,12 +2,15 @@ let day = "1"
 
 let rec string_list_to_int_list = function
   | [] -> []
-  | x :: xs -> (int_of_string x) :: (string_list_to_int_list xs)
+  | x :: xs ->
+  if x = "" then 0 :: (string_list_to_int_list xs)
+  else (int_of_string x) :: (string_list_to_int_list xs)
 
 let rec naloga1 vsebina_datoteke =
   match vsebina_datoteke with
   | [] -> failwith "Ne obstaja."
   | x :: xs ->
+  if x = "" then naloga1 xs else
     let x1, xs1 = int_of_string x, string_list_to_int_list xs in
     if List.mem (2020 - x1) xs1
     then x1 * (2020 - x1)
@@ -25,6 +28,7 @@ let rec naloga2 vsebina_datoteke =
   match vsebina_datoteke with
   | [] -> failwith "Ne obstaja."
   | x :: xs ->
+  if x = "" then naloga2 xs else
     let x1, xs1 = int_of_string x, string_list_to_int_list xs in
     let t = aux (2020 - x1) xs1 in
     if t = 0
