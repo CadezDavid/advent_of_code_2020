@@ -52,14 +52,6 @@ let _ =
      |> preberi_datoteko |> String.split_on_char '\n')
   in
 
-  let rec nekafunkcija = function
-    | [] -> 12
-    | x :: [] -> x
-    | _ -> 42
-  in
-  
-
-
   let start_time1 = Sys.time() in
   let odgovor1 = naloga1 vsebina_datoteke in
   let time_used1 = Sys.time() -. start_time1 in
