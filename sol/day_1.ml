@@ -1,3 +1,5 @@
+#load "unix.cma"
+
 let day = "1"
 
 let rec string_list_to_int_list = function
@@ -48,17 +50,17 @@ let _ =
   in
 
   let vsebina_datoteke =
-    (("/home/davidcadez/FMF/PROG1/advent_of_code_2020/in/day_" ^ day ^ ".in")
+    (("/home/davidcadez/fmf/prog1/advent_of_code_2020/in/day_" ^ day ^ ".in")
      |> preberi_datoteko |> String.split_on_char '\n')
   in
 
-  let start_time1 = Sys.time() in
+  let time1 = Unix.gettimeofday () in
   let odgovor1 = naloga1 vsebina_datoteke in
-  let time_used1 = Sys.time() -. start_time1 in
+  let time_used1 = Unix.gettimeofday () -. time1 in
 
-  let start_time2 = Sys.time() in
+  let time2 = Unix.gettimeofday () in
   let odgovor2 = naloga2 vsebina_datoteke in
-  let time_used2 = Sys.time() -. start_time2 in
+  let time_used2 = Unix.gettimeofday () -. time2 in
 
-  izpisi_datoteko ("/home/davidcadez/FMF/PROG1/advent_of_code_2020/out/day_" ^ day ^ "_1.out") ((string_of_int odgovor1) ^ " in " ^ (string_of_float time_used1) ^ "s");
-  izpisi_datoteko ("/home/davidcadez/FMF/PROG1/advent_of_code_2020/out/day_" ^ day ^ "_2.out") ((string_of_int odgovor2) ^ " in " ^ (string_of_float time_used2) ^ "s")
+  izpisi_datoteko ("/home/davidcadez/fmf/prog1/advent_of_code_2020/out/day_" ^ day ^ "_1.out") ((string_of_int odgovor1) ^ " in " ^ (string_of_float time_used1) ^ "s");
+  izpisi_datoteko ("/home/davidcadez/fmf/prog1/advent_of_code_2020/out/day_" ^ day ^ "_2.out") ((string_of_int odgovor2) ^ " in " ^ (string_of_float time_used2) ^ "s")

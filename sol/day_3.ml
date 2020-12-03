@@ -1,3 +1,5 @@
+#load "unix.cma"
+
 let day = "3"
 
 let naloga1 list =
@@ -26,8 +28,6 @@ let naloga2 list =
     match list2 with
     | [] -> 1
     | (a, b) :: xs ->
-      print_int (aux2 0 0 list1 0 a b);
-      print_char '\n';
       (aux2 0 0 list1 0 a b) * (aux2' list1 xs)
   in
   aux2' list list_of_pairs
@@ -50,9 +50,13 @@ let _ =
      |> preberi_datoteko |> String.split_on_char '\n')
   in
 
+  let time1 = Unix.gettimeofday () in
   let odgovor1 = naloga1 vsebina_datoteke in
+  let time_used1 = Unix.gettimeofday () -. time1 in
 
+  let time2 = Unix.gettimeofday () in
   let odgovor2 = naloga2 vsebina_datoteke in
+  let time_used2 = Unix.gettimeofday () -. time2 in
 
-  izpisi_datoteko ("/home/davidcadez/fmf/prog1/advent_of_code_2020/out/day_" ^ day ^ "_1.out") (string_of_int odgovor1);
-  izpisi_datoteko ("/home/davidcadez/fmf/prog1/advent_of_code_2020/out/day_" ^ day ^ "_2.out") (string_of_int odgovor2)
+  izpisi_datoteko ("/home/davidcadez/fmf/prog1/advent_of_code_2020/out/day_" ^ day ^ "_1.out") ((string_of_int odgovor1) ^ " in " ^ (string_of_float time_used1) ^ "s");
+  izpisi_datoteko ("/home/davidcadez/fmf/prog1/advent_of_code_2020/out/day_" ^ day ^ "_2.out") ((string_of_int odgovor2) ^ " in " ^ (string_of_float time_used2) ^ "s")
