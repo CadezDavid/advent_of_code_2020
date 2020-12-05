@@ -29,6 +29,30 @@ let seat_id s =
   let (row, col) = row_and_col s in
   ((8 * row) + col)
 
+
+
+(* Tole sem si pa sposodil s strani *)
+(* http://createsoftware.users.sourceforge.net/articles/Sorting%20in%20OCaml%20-%20C.%20Pit--Claudel.pdf *)
+let quicksort list =
+  let split list pivot =
+    let rec split_aux inf sup = function
+      | [] -> (inf, sup)
+      | x :: xs ->
+        if x < pivot then split_aux (x :: inf) sup xs
+        else split_aux inf (x :: sup) xs
+    in
+    split_aux [] [] list
+  in
+  let rec sort result = function
+    | [] -> result
+    | [x] -> x :: result
+    | pivot :: xs ->
+      let (inf, sup) = split xs pivot in
+      sort (pivot :: (sort result inf)) sup
+  in
+  List.rev (sort [] list)
+
+(* Naiven sort *)
 let rec sort list =
   let rec is_sorted = function
     | [] | [_] -> true
@@ -57,7 +81,7 @@ let rec naloga1 list =
 
 let naloga2 list =
   let ids = List.map seat_id list in
-  let sorted_ids = sort ids in
+  let sorted_ids = quicksort ids in
   let rec aux list =
     match list with
     | x1 :: x2 :: xs ->
