@@ -1,43 +1,34 @@
 #load "unix.cma"
 
 let day = "6"
+let alphabet = ['a';'b';'c';'d';'e';'f';'g';'h';'i';'j';'k';'l';'m';'n';'o';'p';'q';'r';'s';'t';'u';'v';'w';'x';'y';'z']
 
+let list_of_string s = List.init (String.length s) (String.get s)
 
+let rec union l = function
+  | [] -> l
+  | x :: xs -> if List.mem x l then union l xs else x :: union l xs
 
-let rec union s1 = function
-  | "" -> ""
-  | s2 ->
-    if String.contains s1 s2.[0]
-    then union s1 (String.sub s2 1 ((String.length s2) - 1))
-    else union (s1 ^ (String.make 1 s2.[0])) (String.sub s2 1 ((String.length s2) - 1))
-
-let rec intersection s1 = function
-  | "" -> ""
-  | s2 ->
-    if String.contains s1 s2.[0]
-    then (String.make 1 s2.[0]) ^ intersection s1 (String.sub s2 1 ((String.length s2) - 1))
-    else intersection s1 (String.sub s2 1 ((String.length s2) - 1))
-
+let rec intersection l = function
+  | [] -> []
+  | x :: xs -> if List.mem x l then x :: intersection l xs else intersection l xs
 
 
 let naloga1 list =
-  let rec aux acc current list =
-    match list with
-    | [] -> acc + String.length current
-    | "" :: xs -> aux (acc + String.length current) "" xs
-    | x :: xs -> aux acc (union x current) xs
+  let rec aux acc current = function
+    | [] -> acc + (List.length current)
+    | "" :: xs -> aux (acc + List.length current) [] xs
+    | x :: xs -> aux acc (union (list_of_string x) current) xs
   in
-  aux 0 "" list
+  aux 0 [] list
 
 let naloga2 list =
-  let rec aux acc current list =
-    match list with
-    | [] -> acc + String.length current
-    | "" :: xs -> aux (acc + String.length current) "abcdefghijklmnoprstuvzxyqw" xs
-    | x :: xs -> aux acc (intersection x current) xs
+  let rec aux acc current = function
+    | [] | [""] -> acc + (List.length current)
+    | "" :: xs -> aux (acc + List.length current) alphabet xs
+    | x :: xs -> aux acc (intersection (list_of_string x) current) xs
   in
-  aux 0 "abcdefghijklmnoprstuvzxyqw" list
-
+  aux 0 alphabet list
 
 
 let _ =
