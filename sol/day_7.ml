@@ -1,6 +1,4 @@
-#load "unix.cma";;
-#load "str.cma"
-
+#load "unix.cma"
 let day = "7"
 
 let rec clean = function
@@ -9,21 +7,12 @@ let rec clean = function
   | x :: xs -> x :: clean xs
 
 let tuple_of_string s =
-  let first =
-    match String.split_on_char ' ' s with
-    | first1 :: first2 :: _  -> first1 ^ " " ^ first2
-    | _ -> failwith "Unexpected argument in tuple_of_string."
+  let first1 :: first2 :: bags :: contain :: xs = String.split_on_char ' ' s in
+  let rec other = function
+    | n :: other1 :: other2 :: bags :: xs -> (int_of_string n, other1 ^ " " ^ other2) :: other xs
+    | _ -> []
   in
-  (* print_string (first ^ "\n"); *)
-  let r = Str.regexp "[0-9] [a-zA-Z]+ [a-zA-Z]+ bag" in
-  let rec other s =
-    let t = try (Str.search_forward r s 0) with Not_found -> -1 in
-    if t = -1 then [] else
-      match String.split_on_char ' ' (Str.matched_string s) with
-      | n :: name1 :: name2 :: ["bag"] -> (int_of_string n, name1 ^ " " ^ name2) :: other (Str.replace_first r "" s)
-      | _ -> failwith "Unexpected argument in tuple_of_string."
-  in
-  (first, other s)
+  (first1 ^ " " ^ first2, other xs)
 
 
 let rec aux1 b l1 l2 l3 =
@@ -87,3 +76,23 @@ let _ =
 
   izpisi_datoteko ("/home/davidcadez/fmf/prog1/advent_of_code_2020/out/day_" ^ day ^ "_1.out") ((string_of_int odgovor1) ^ " in " ^ (string_of_float time_used1) ^ "s");
   izpisi_datoteko ("/home/davidcadez/fmf/prog1/advent_of_code_2020/out/day_" ^ day ^ "_2.out") ((string_of_int odgovor2) ^ " in " ^ (string_of_float time_used2) ^ "s")
+
+
+
+
+
+(* let tuple_of_string s =
+   let first =
+    match String.split_on_char ' ' s with
+    | first1 :: first2 :: _  -> first1 ^ " " ^ first2
+    | _ -> failwith "Unexpected argument in tuple_of_string."
+   in
+   let r = Str.regexp "[0-9] [a-zA-Z]+ [a-zA-Z]+ bag" in
+   let rec other s =
+    let t = try (Str.search_forward r s 0) with Not_found -> -1 in
+    if t = -1 then [] else
+      match String.split_on_char ' ' (Str.matched_string s) with
+      | n :: name1 :: name2 :: ["bag"] -> (int_of_string n, name1 ^ " " ^ name2) :: other (Str.replace_first r "" s)
+      | _ -> failwith "Unexpected argument in tuple_of_string."
+   in
+   (first, other s) *)
