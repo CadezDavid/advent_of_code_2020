@@ -23,9 +23,13 @@ let quicksort list =
   in
   List.rev (sort [] list)
 
-let rec first_n i list =
-  if i = 0 then [] else
-    List.hd list :: first_n (i - 1) (List.tl list)
+let rec first_rest i list =
+  match (i, list) with
+  | (0, _) -> ([], list)
+  | (_, x :: xs) ->
+    let (f, r) = first_rest (i - 1) xs in
+    (x :: f, r)
+  | (_, []) -> (list, [])
 
 let rec my_mem n = function
   | [] -> false
@@ -34,21 +38,23 @@ let rec my_mem n = function
     if n < x then false else
       my_mem n xs
 
-let rec aux1 l n =
-  let list = quicksort l in
-  let rec aux1' n = function
-    | [] -> false
-    | x :: xs ->
-      if my_mem (n - x) xs then true else
-      if (n / 2 + 1) < x then false else
-        aux1' n xs
-  in
-  aux1' n list
+let rec aux1' n = function
+  | [] -> false
+  | x :: xs ->
+    if (n/2) < x then false else
+    if my_mem (n - x) xs then true
+    else aux1' n xs
+
+let rec aux1 curr n rest =
+  if aux1' n (quicksort curr) then
+    let r :: rs = rest in
+    let c :: cs = curr in
+    aux1 ((List.tl curr) @ [n]) r rs
+  else n
 
 let rec naloga1 list =
-  let list_25 = first_n 25 list in
-  let n = List.nth list 25 in
-  if aux1 list_25 n then naloga1 (List.tl list) else n
+  let (first, r :: rs) = first_rest 25 list in
+  aux1 first r rs
 
 let rec my_max = function
   | [x] -> x
@@ -61,15 +67,15 @@ let rec my_min = function
   | [] -> failwith "Unexpected argument in my_min."
 
 let rec aux2 n acc (curr1, curr2) rest =
-  let r :: rs = rest in
-  if acc = n then (my_min (curr1 @ curr2)) + (my_max (curr1 @ curr2)) else
-  if acc < n then aux2 n (acc + r) (curr1, (r :: curr2)) rs else
-  if curr1 = [] then aux2 n acc ((List.rev (List.tl curr2)), [List.hd curr2]) rest else
-    let c1 :: cs1 = curr1 in
-    aux2 n (acc - c1) (cs1, curr2) rest
+  if acc = n then my_min (curr1 @ curr2) + my_max (curr1 @ curr2) else
+    let r :: rs = rest in
+    if acc < n then aux2 n (acc + r) (curr1, (r :: curr2)) rs else
+    if curr1 = [] then aux2 n acc ((List.rev (List.tl curr2)), [List.hd curr2]) rest else
+      let c :: cs = curr1 in
+      aux2 n (acc - c) (cs, curr2) rest
 
-let naloga2 list =
-  aux2 (naloga1 list) 0 ([], []) (List.tl (List.tl list))
+let naloga2 n list =
+  aux2 n 0 ([], []) list
 
 
 let _ =
@@ -95,7 +101,7 @@ let _ =
   let time_used1 = Unix.gettimeofday () -. time1 in
 
   let time2 = Unix.gettimeofday () in
-  let odgovor2 = naloga2 vsebina_datoteke in
+  let odgovor2 = naloga2 odgovor1 vsebina_datoteke in
   let time_used2 = Unix.gettimeofday () -. time2 in
 
   izpisi_datoteko ("/home/davidcadez/fmf/prog1/advent_of_code_2020/out/day_" ^ day ^ "_1.out") ((string_of_int odgovor1) ^ " in " ^ (string_of_float time_used1) ^ "s");
