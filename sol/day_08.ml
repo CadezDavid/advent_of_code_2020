@@ -1,6 +1,6 @@
 #load "unix.cma";;
 
-let day = "8"
+let day = "08"
 
 let rec clean i = function
   | [] -> []

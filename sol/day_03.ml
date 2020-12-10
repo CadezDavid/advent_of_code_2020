@@ -1,6 +1,6 @@
 #load "unix.cma"
 
-let day = "3"
+let day = "03"
 
 let naloga1 list =
   let rec aux acc i list =

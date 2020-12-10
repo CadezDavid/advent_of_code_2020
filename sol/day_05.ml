@@ -1,6 +1,6 @@
 #load "unix.cma";;
 
-let day = "5"
+let day = "05"
 
 let rec power a b =
   if b = 0 then 1 else

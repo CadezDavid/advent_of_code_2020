@@ -1,43 +1,38 @@
 #load "unix.cma"
 
-let day = "1"
+let day = "06"
+let alphabet = ['a';'b';'c';'d';'e';'f';'g';'h';'i';'j';'k';'l';'m';'n';'o';'p';'q';'r';'s';'t';'u';'v';'w';'x';'y';'z']
 
-let rec string_list_to_int_list = function
+let list_of_string s = List.init (String.length s) (String.get s)
+
+let rec union l = function
+  | [] -> l
+  | x :: xs -> if List.mem x l then union l xs else x :: union l xs
+
+let rec intersection l = function
   | [] -> []
-  | x :: xs ->
-    if x = "" then 0 :: (string_list_to_int_list xs)
-    else (int_of_string x) :: (string_list_to_int_list xs)
+  | x :: xs -> if List.mem x l then x :: intersection l xs else intersection l xs
 
-let rec naloga1 vsebina_datoteke =
-  match vsebina_datoteke with
-  | [] -> failwith "Ne obstaja."
-  | x :: xs ->
-    if x = "" then naloga1 xs else
-      let x1, xs1 = int_of_string x, string_list_to_int_list xs in
-      if List.mem (2020 - x1) xs1
-      then x1 * (2020 - x1)
-      else naloga1 xs
 
-let rec naloga2 vsebina_datoteke =
-  let rec aux k list =
-    match list with
-    | [] -> 0
-    | x :: xs ->
-      if List.mem (k - x) xs
-      then x * (k - x)
-      else aux k xs
+let naloga1 list =
+  let rec aux acc current = function
+    | [] -> acc + (List.length current)
+    | "" :: xs -> aux (acc + List.length current) [] xs
+    | x :: xs -> aux acc (union (list_of_string x) current) xs
   in
-  match vsebina_datoteke with
-  | [] -> failwith "Ne obstaja."
-  | x :: xs ->
-    if x = "" then naloga2 xs else
-      let x1, xs1 = int_of_string x, string_list_to_int_list xs in
-      let t = aux (2020 - x1) xs1 in
-      if t = 0
-      then naloga2 xs
-      else x1 * t
+  aux 0 [] list
+
+let naloga2 list =
+  let rec aux acc current = function
+    | [] | [""] -> acc + (List.length current)
+    | "" :: xs -> aux (acc + List.length current) alphabet xs
+    | x :: xs -> aux acc (intersection (list_of_string x) current) xs
+  in
+  aux 0 alphabet list
+
 
 let _ =
+
   let preberi_datoteko ime_datoteke =
     let chan = open_in ime_datoteke in
     let vsebina = really_input_string chan (in_channel_length chan) in

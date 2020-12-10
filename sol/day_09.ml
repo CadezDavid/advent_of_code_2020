@@ -1,6 +1,6 @@
 #load "unix.cma";;
 
-let day = "9"
+let day = "09"
 
 (* Tole sem si pa sposodil s strani *)
 (* http://createsoftware.users.sourceforge.net/articles/Sorting%20in%20OCaml%20-%20C.%20Pit--Claudel.pdf *)

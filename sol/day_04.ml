@@ -1,7 +1,7 @@
 #load "unix.cma";;
 #load "str.cma"
 
-let day = "4"
+let day = "04"
 
 let check_byr b =
   let year =

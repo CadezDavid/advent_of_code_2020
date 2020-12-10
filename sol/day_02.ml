@@ -1,6 +1,6 @@
 #load "unix.cma"
 
-let day = "2"
+let day = "02"
 
 let rec string_to_list string =
   string |> String.split_on_char ' '
