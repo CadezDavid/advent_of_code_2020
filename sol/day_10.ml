@@ -2,34 +2,12 @@
 
 let day = "10"
 
-(* Tole sem si pa sposodil s strani *)
-(* http://createsoftware.users.sourceforge.net/articles/Sorting%20in%20OCaml%20-%20C.%20Pit--Claudel.pdf *)
-let quicksort list =
-  let split list pivot =
-    let rec split_aux inf sup = function
-      | [] -> (inf, sup)
-      | x :: xs ->
-        if x < pivot then split_aux (x :: inf) sup xs
-        else split_aux inf (x :: sup) xs
-    in
-    split_aux [] [] list
-  in
-  let rec sort result = function
-    | [] -> result
-    | [x] -> x :: result
-    | pivot :: xs ->
-      let (inf, sup) = split xs pivot in
-      sort (pivot :: (sort result inf)) sup
-  in
-  List.rev (sort [] list)
-
 
 let rec aux1 (acc1, acc2) = function
-  | [x] -> acc1 * (acc2 + 1)
+  | [] | [_] -> acc1 * (acc2 + 1)
   | x1 :: x2 :: xs ->
     if x2 = x1 + 1 then aux1 (acc1 + 1, acc2) (x2 :: xs)
     else aux1 (acc1, acc2 + 1) (x2 :: xs)
-  | _ -> failwith "Unexpected argument in aux1."
 
 let rec aux2' l = function
   | [] -> []
@@ -53,14 +31,11 @@ let rec aux2 = function
 
 
 let naloga1 list =
-  aux1 (1, 0) (quicksort list)
+  list |> List.sort (fun x y -> if x < y then -1 else 1) |> aux1 (1, 0)
 
 let naloga2 list =
-  let rec mul f = function
-    | [] -> 1
-    | x :: xs -> (f x) * mul f xs
-  in
-  mul aux2 (aux2' [] (0 :: quicksort list))
+  list |> List.sort (fun x y -> if x < y then -1 else 1)
+  |> aux2' [0] |> List.map aux2 |> List.fold_left ( * ) 1
 
 
 let _ =
